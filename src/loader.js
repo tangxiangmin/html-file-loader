@@ -1,13 +1,13 @@
-// const loaderUtils = require("loader-utils");
+const loaderUtils = require("loader-utils");
 
 const replaceUtil = require('./replace')
-
 module.exports = function (source) {
     this.cacheable();
-
     const callback = this.async();
 
-    let content = replaceUtil.replace(source)
+    let options = loaderUtils.getOptions(this)
+
+    let content = replaceUtil.replace(source, options)
 
     callback(null, `module.exports = \`${content}\``);
 }

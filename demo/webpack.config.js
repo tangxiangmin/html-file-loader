@@ -42,7 +42,13 @@ module.exports = (env) => {
                 {
                     test: /\.(htm|html)$/i,
                     loader: 'html-file-loader',
-                    options: {} // todo
+                    options: {
+                        img: ["src", "data-src"],
+                        link: ["href"],
+                        audio: ["src"],
+                        script: ["src"],
+                        video: ["src"]
+                    }
                 },
             ]
         },

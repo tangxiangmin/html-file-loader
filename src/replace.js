@@ -1,6 +1,5 @@
-// todo 开放配置接口
-const tagsConfig = {
-    img: ["src", "data-src"],
+const defaultTagConfig = {
+    img: ["src"],
     link: ["href"],
     audio: ["src"],
     script: ["src"],
@@ -13,7 +12,7 @@ function replaceAllSemicolon(content) {
 }
 
 // 使用正则解析img、audio、script、link等标签的文件引用
-function replaceTag(content) {
+function replaceTag(content, tagsConfig) {
     // todo 增加其他标签的解析方式
     const re = /<(img|link|audio|script).*?\/?>/g
     return content.replace(re, (tag) => {
@@ -23,7 +22,7 @@ function replaceTag(content) {
             let attrs = tagsConfig[tagName]
             Array.isArray(attrs) && attrs.forEach(attr => {
                 tag = tag.replace(new RegExp(`${attr}=(['"])(.*?)\\1`), function (match, $1, source) {
-                    // 不管$1捕获的是单引号还是双引号，都将属性替换为"双引号包围  
+                    // 不管$1捕获的是单引号还是双引号，都将属性替换为"双引号包围
                     return `${attr}="\` + require('${source}') + \`"`
                 })
             })
@@ -33,8 +32,10 @@ function replaceTag(content) {
 }
 
 module.exports = {
-    replace(content) {
-        return replaceTag(replaceAllSemicolon(content))
+    replace(content, options) {
+
+        let config = Object.assign({}, defaultTagConfig, options)
+        return replaceTag(replaceAllSemicolon(content), config)
     },
     replaceAllSemicolon,
     replaceTag

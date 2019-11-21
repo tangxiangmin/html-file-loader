@@ -63,6 +63,23 @@ describe('Replace', () => {
             expect(result).equal(`<img src="\` + require('./assets/placeholder.png') + \`" data-src="\` + require('./assets/1.png') + \`" alt="">`)
         })
 
+        // todo
+        it('should not replace when resource start with http?', () => {
+            const input = `<img src='http://shymean.com/assets/1.png' alt="">`
+
+            const result = replaceTag(input)
+
+            expect(result).equal(input)
+        })
+        
+        it('should not replace when resource start with https', () => {
+            const input = `<img src='https://shymean.com/assets/1.png' alt="">`
+
+            const result = replaceTag(input)
+
+            expect(result).equal(input)
+        })
+
     })
 })
 

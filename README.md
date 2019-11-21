@@ -17,7 +17,14 @@ module: {
         {
             test: /\.(htm|html)$/i,
             loader: 'html-src-loader',
-            options: {} // todo
+           options: {
+                // 按需配置需要处理的标签
+               img: ["src", "data-src"], // 每个标签都可以通过数组指定多个需要替换的属性
+               link: ["href"],
+               audio: ["src"],
+               script: ["src"],
+               video: ["src"]
+           }
         },
     ]
 },
@@ -27,6 +34,16 @@ plugins: [
         }
     )
 ],
+```
+默认`options`为
+```js
+const defaultTagConfig = {
+    img: ["src"],
+    link: ["href"],
+    audio: ["src"],
+    script: ["src"],
+    video: ["src"]
+}
 ```
 
 ## 为什么需要自定义匹配规则
